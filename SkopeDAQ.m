@@ -22,12 +22,12 @@ obj = SkopeFuncs_01; % Call functions from class
 SKope = obj.SKopeTetDPO();
 
 % (2) ---- Rendering  ---- (2)
-xlim = xlim([-5*10^-6 4*10^-6]);
-ylim = ylim([19.66 19.78]);
-Trig= 100; %If you dont want to save files, just set the trigget to 1000000
-seed = "_test.csv"
+xlim1 = [-5*10^-6 4*10^-6];
+ylim1 = [19.66 19.78];
+Trig= 10; %If you dont want to save files, just set the trigget to 1000000
+seed = "_test.csv"; % file 
 directory = '/Users/krishaverson/Documents/MATLAB/OscilloscopAnalysis/skopeDaq/SkopeDaq_1/WriteDirecTest/';
-[X,Y]=SView(SKope,xlim,ylim,Trig,directory,seed);
+obj.SView(SKope,xlim1,ylim1,Trig,directory,seed);
 
 
 

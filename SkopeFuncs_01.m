@@ -12,7 +12,10 @@
 %              SView(SKope,xlim,ylim,Trig,directory,seed)                   %
 % ========================================================================= %
 
-
+%delete([deviceObj interfaceObj]);
+%clear groupObj;
+%clear deviceObj;
+%clear interfaceObj;
 
 
 
@@ -44,39 +47,37 @@ classdef SkopeFuncs_01
             set(interfaceObj, 'InputBufferSize', 3000000);
             connect(deviceObj);
             SKope = get(deviceObj, 'Waveform');
-
+            disp("Connected")
         end
 
-        function [X,Y] =SView(obj,SKope,xlim,ylim,Trig,directory,seed)
-            i=1;
-            tic
 
+
+
+        function SView(obj,SKope,xlim1,ylim1,Trig,directory,seed)
+            i=100; % Need start naming files from 100
+
+            a=1;
             while a    % constant loop
                 [Y,X] = invoke(SKope, 'readwaveform', 'Channel1');
 
-                Y=-Y;
-                X=-X;
+                Y=-Y'; % take inverse and transpose
+                X=-X';
 
+                %  -- Create plots -- %
+                figure(1)
                 plot(X,  Y);
-
-                xlim=xlim;
-                ylim=ylim;
-
+                grid on
+                
+                % -- If pulse is over a threshold, save file -- %
                 if(Y>Trig)
-                    t=toc
-                    name = append(i," _",t,"_",seed);
-                    i=1+1
-                    newdata = [X,Y]
-                    dlmwrite(name,newdata)
+                    name = append(i,"_",seed); % create file name
+                    i=i+1;
+                    newdata = [X,Y]; % Bundle data
+                    dlmwrite(name,newdata); % WRite it to a file
 
                 end
-
-                grid on
-                pause(0.0002);
-
+                pause(0.0002); % Need this pause for system to register changes 
             end
-
-         
         end
 
 
